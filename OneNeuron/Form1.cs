@@ -26,9 +26,11 @@ namespace OneNeuron
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            RandomiseData(200);
+            
+
+            RandomiseData(1000);
             SelectClassType(points);
-            if (!File.Exists("C:\\foo.txt"))
+            if (!File.Exists("D:\\foo.txt"))
             {
                 StreamWriter sw = File.CreateText("D:\\foo.txt");
                 for (var i = 0; i < points.Count; i++)
@@ -104,8 +106,27 @@ namespace OneNeuron
                     g.DrawEllipse(System.Drawing.Pens.Blue, new Rectangle(Convert.ToInt32(points[i].X *50), pictureBox1.Size.Height - Convert.ToInt32(points[i].Y *50), 3, 3));
                 }
             }
-           g.DrawLine(System.Drawing.Pens.Black, 0, pictureBox1.Size.Height - Convert.ToInt32(Function(0) * 50), pictureBox1.Size.Width * 50, Convert.ToInt32(pictureBox1.Size.Height - Function(pictureBox1.Size.Width) * 50));
+            g.DrawLine(System.Drawing.Pens.Black, 0, pictureBox1.Size.Height - Convert.ToInt32(Function(0) /** 50*/), pictureBox1.Size.Width /** 50*/, Convert.ToInt32(pictureBox1.Size.Height - Function(pictureBox1.Size.Width) /** 50*/));
             //pictureBox1.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            //g.DrawLine(System.Drawing.Pens.Black, 0, pictureBox1.Size.Height, pictureBox1.Size.Width, 0 /** 50*/);
+
+            Neuron neuron = new Neuron();
+            for (int j = 0; j < 10; ++j)
+            {
+                for (int i = 0; i < points.Count * 3 / 4; ++i)
+                {
+                    neuron.operation(points[i]);
+                }
+                Console.WriteLine("\nloop " + j + "\nCorrect: " + neuron.correct + "\nIncorrect: " + neuron.incorrect);
+                Console.WriteLine("\nw0: " + neuron.w0 + "\nw1: " + neuron.w1 + "\nw2: " + neuron.w2);
+                neuron.correct = 0;
+                neuron.incorrect = 0;
+            }
+
+            g.DrawLine(System.Drawing.Pens.GreenYellow, 0, pictureBox1.Size.Height - (float)(-neuron.w1 / neuron.w2 * 0 - neuron.w0 / neuron.w2), pictureBox1.Size.Width * 50, (float)(-neuron.w1 / neuron.w2 * pictureBox1.Size.Width - neuron.w0 / neuron.w2)*50/*Convert.ToInt32(pictureBox1.Size.Height - Function(pictureBox1.Size.Width) * 50)*/);
+
+            //g.DrawEllipse(System.Drawing.Pens.GreenYellow, new Rectangle(Convert.ToInt32(5 * 50), pictureBox1.Size.Height - Convert.ToInt32(5 * 50), 30, 30));
+
         }
 
     }
