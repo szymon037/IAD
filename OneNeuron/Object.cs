@@ -8,33 +8,14 @@ namespace OneNeuron
 {
     class Object
     {
-        public double X;
-        public double Y;
+        public int X;
+        public int Y;
         public int ClassType;
-        public Object(Random rnd)
+        public Object(Random rnd, int maxW, int maxH)
         {
-            X = rnd.Next(0, 10) + rnd.NextDouble();
-            Y = rnd.Next(0, 10) + rnd.NextDouble();
+            X = rnd.Next(0, maxW);
+            Y = rnd.Next(0, maxH);
             ClassType = 0;
-        }
-        public static  bool operator >(Object a, Object b)
-        {
-            if (a.X > b.X)
-            {
-                return true;
-            }
-            else
-                return false;
-        }
-
-        public static bool operator <(Object a, Object b)
-        {
-            if (a.X < b.X)
-            {
-                return true;
-            }
-            else
-                return false;
         }
     }
 }

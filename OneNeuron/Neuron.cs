@@ -10,6 +10,7 @@ namespace OneNeuron
     {
         public double w0, w1, w2;
         public int correct, incorrect;
+        public double lr = 0.1;
         public Neuron()
         {
             Random rnd = new Random();
@@ -25,7 +26,7 @@ namespace OneNeuron
         public void operation(Object a)
         {
             double u = w0 + w1 * a.X + w2 * a.Y;
-            int f_u = 0;
+            int f_u;
 
             if (u > 0)
                 f_u = 1;
@@ -38,17 +39,17 @@ namespace OneNeuron
         {
             if (a.ClassType == 0 && f_u == 1)
             {
-                w0 = w0 - f_u;
-                w1 = w1 - f_u * a.X;
-                w2 = w2 - f_u * a.Y;
+                w0 = w0 - lr;
+                w1 = w1 - lr * a.X;
+                w2 = w2 - lr * a.Y;
 
                 ++incorrect;
             }
             else if (a.ClassType == 1 && f_u == 0)
             {
-                w0 = w0 + f_u;
-                w1 = w1 + f_u * a.X;
-                w2 = w2 + f_u * a.Y;
+                w0 = w0 + lr;
+                w1 = w1 + lr * a.X;
+                w2 = w2 + lr * a.Y;
 
                 ++incorrect;
             }
