@@ -72,7 +72,7 @@ namespace OneNeuron
 
         public double Function(double x)
         {
-            return 2*x+3;
+            return x+1;
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -115,12 +115,11 @@ namespace OneNeuron
                     neuron.correct = 0;
                     neuron.incorrect = 0;
 
-                }
-
-
-                g.DrawLine(System.Drawing.Pens.Green, 0, (int)((-neuron.w1 / neuron.w2) * 0 - neuron.w0 / neuron.w2), pictureBox1.Size.Width, (int)(-neuron.w1 / neuron.w2 * pictureBox1.Size.Width - neuron.w0 / neuron.w2) );
-                
+                }                               
             }
+            g.DrawLine(System.Drawing.Pens.Yellow, 0, (int)((-neuron.w1 / neuron.w2) * 0 - neuron.w0 / neuron.w2), pictureBox1.Size.Width, (int)(-neuron.w1 / neuron.w2 * pictureBox1.Size.Width - neuron.w0 / neuron.w2));
+
+
             Object a = new Object(rnd, 600, 600);
             NeuronChoise(a, neuron);
             if(a.ClassType == 1)
