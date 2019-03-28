@@ -30,15 +30,13 @@ namespace OneNeuron
         {
             
 
-            RandomiseData(100);
+            RandomiseData(50);
             SelectClassType(points);
             if (!File.Exists("D:\\foo.txt"))
             {
                 StreamWriter sw = File.CreateText("D:\\foo.txt");
-                for (var i = 0; i < points.Count; i++)
+                for (int i = 0; i < points.Count; i++)
                 {
-                    sw.Write(i);
-                    sw.Write("-");
                     sw.Write(points[i].X);
                     sw.Write(" ");
                     sw.Write(points[i].Y);
@@ -72,7 +70,7 @@ namespace OneNeuron
 
         public double Function(double x)
         {
-            return x+1;
+            return x;
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -100,7 +98,7 @@ namespace OneNeuron
             //Console.WriteLine("w0: " + neuron.w0 + "\nw1:" + neuron.w1 + "\nw2: " + neuron.w2);
             for (int n = 0; n < 2; n++)
             {
-                RandomiseData(100);
+                RandomiseData(50);
                 SelectClassType(points);
                 for (int j = 0; j < 50; ++j)
                 {

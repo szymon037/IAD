@@ -10,7 +10,7 @@ namespace OneNeuron
     {
         public double w0, w1, w2;
         public int correct, incorrect;
-        public double lr = 0.1;
+        public double lr = 0.001;
         public Neuron()
         {
             Random rnd = new Random();
