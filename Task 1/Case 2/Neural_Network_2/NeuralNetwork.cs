@@ -25,8 +25,8 @@ namespace NeuralNetwork
 
         public NeuralNetwork(int inputAmount, int hiddenAmount, int outputAmount, bool bias)
         {
-            learningRate = 0.5;
-            momentumRate = 0.5;
+            learningRate = 0.04;
+            momentumRate = 0.08;
             useBias = bias;
 
             hiddenWeights = new Matrix.Matrix(hiddenAmount, inputAmount);    // 2 x 3
@@ -51,6 +51,7 @@ namespace NeuralNetwork
         public Matrix.Matrix FeedForward(double[] inputArray)
         {
             Matrix.Matrix inputMatrix = new Matrix.Matrix(inputArray);    // 3 x 1
+
             Matrix.Matrix hiddenOutput = hiddenWeights * inputMatrix;
             if (useBias)
             {
@@ -63,7 +64,10 @@ namespace NeuralNetwork
             {
                 outputsOutput += biasOutput;
             }
+            
+
             OutputActivationFunction(outputsOutput);
+
             return outputsOutput;
         }
 
@@ -85,11 +89,16 @@ namespace NeuralNetwork
                 outputsOutput += biasOutput;
             }
             OutputActivationFunction(outputsOutput);
+            //ActivationFunction(outputsOutput);
+
 
             Matrix.Matrix targetMatrix = new Matrix.Matrix(targetArray);
             Matrix.Matrix outputErrorsMatrix = targetMatrix - outputsOutput;
 
-            mapMatrix(outputsOutput);
+             mapMatrixLinearry(outputsOutput);
+
+            //mapMatrix(outputsOutput);
+
 
             Matrix.Matrix gradients_output = outputErrorsMatrix * learningRate;
             gradients_output.HadamardProduct(outputsOutput);
@@ -173,13 +182,13 @@ namespace NeuralNetwork
             }
         }
 
-        public void MapMatrix(Matrix.Matrix m)
+        public void mapMatrixLinearry(Matrix.Matrix m)
         {
             for (int i = 0; i < m.row; ++i)
             {
                 for (int j = 0; j < m.column; ++j)
                 {
-                    m.tab[i, j] = dSigmoid(m.tab[i, j]);
+                    m.tab[i, j] = 1;
                 }
             }
         }

@@ -70,7 +70,7 @@ namespace Neural_Network_2
                 punktySerii.Points.Add(new DataPoint(data[i], target[i]));
             }
 
-            for (int i = 0; i < 20; i++)
+            /*for (int i = 0; i < 20; i++)
             {
                 NeuralNetwork.NeuralNetwork nn = new NeuralNetwork.NeuralNetwork(1, 10, 1, true);
                 //do
@@ -97,8 +97,36 @@ namespace Neural_Network_2
                     ++epoch;
                 //}
                 //while (sum / 2 > 0.1);
+            }*/
+            //output.DisplayMatrix();
+
+            Matrix.Matrix outputFF = new Matrix.Matrix(1, 1);
+            double[] d = new double[1];
+            NeuralNetwork.NeuralNetwork nn = new NeuralNetwork.NeuralNetwork(1, 20, 1, false);
+
+            int c = 2;
+
+            for (int i = 0; i < 3000; ++i)
+            {
+                foreach (int j in Enumerable.Range(0, 81).OrderBy(x => rnd.Next()))
+                {
+                    d[0] = data[j];
+                    //double[] y = new double[1] { target[j] };
+                    double[] y = new double[1] { c };
+                    nn.Train(d, y);
+                }
+
             }
-           //output.DisplayMatrix();
+
+            for (int i = 0; i < 81; ++i)
+            {
+                d[0] = data[i];
+                outputFF = nn.FeedForward(d);
+                punktySieci.Points.Add(new DataPoint(d[0], outputFF.tab[0, 0]));
+                //Console.WriteLine("x: " + d[0] + " y: " + outputFF.tab[0, 0]);
+                //outputFF.DisplayMatrix();
+            }
+
             pm.Series.Add(punktySieci);
             pm.Series.Add(punktySerii);
         }
@@ -124,14 +152,14 @@ namespace Neural_Network_2
         private void SortX(double[] data, double[] target)
         {
             Array.Sort(data, target);
-            foreach (double key in data)
+            /*foreach (double key in data)
             {
                 Console.WriteLine(key);
             }
             foreach (double item in target)
             {
                 Console.WriteLine(item); 
-            }
+            }*/
         }
 
         private static void Shuffle(double[] data, double[] target)
