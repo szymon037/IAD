@@ -34,6 +34,21 @@ namespace Matrix
             }
         }
 
+        public Matrix(double[] array)
+        {
+            this.row = array.Length;
+            this.column = 1;
+
+
+            tab = new double[this.row, this.column];
+
+
+            for (int i = 0; i < array.Length; ++i)
+            {
+                tab[i, 0] = array[i];
+            }
+        }
+
         public void DisplayMatrix()
         {
             for (int i = 0; i < row; i++)
