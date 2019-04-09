@@ -117,7 +117,7 @@ namespace NeuralNetwork_1
             data[2] = new int[] { 0, 0, 1, 0 };
             data[3] = new int[] { 0, 0, 0, 1 };
 
-            NeuralNetwork nn = new NeuralNetwork(4, 3, 4, true);
+            NeuralNetwork nn = new NeuralNetwork(4, 10, 4, true);
             int n = 0;
 
             Random rnd = new Random();
