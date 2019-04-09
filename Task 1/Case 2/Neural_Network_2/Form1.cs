@@ -106,13 +106,13 @@ namespace Neural_Network_2
 
             int c = 2;
 
-            for (int i = 0; i < 3000; ++i)
+            for (int i = 0; i < 10000; ++i)
             {
                 foreach (int j in Enumerable.Range(0, 81).OrderBy(x => rnd.Next()))
                 {
                     d[0] = data[j];
-                    //double[] y = new double[1] { target[j] };
-                    double[] y = new double[1] { c };
+                    double[] y = new double[1] { target[j] };
+                   // double[] y = new double[1] { c };
                     nn.Train(d, y);
                 }
 
