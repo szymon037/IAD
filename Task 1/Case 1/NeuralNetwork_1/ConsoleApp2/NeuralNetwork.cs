@@ -25,7 +25,7 @@ namespace NeuralNetwork_1
 
         public NeuralNetwork(int inputAmount, int hiddenAmount, int outputAmount, bool bias)
         {
-            learningRate = 0.1;
+            learningRate = 0.5;
             momentumRate = 0.5;
             useBias = bias;          
 
@@ -35,21 +35,20 @@ namespace NeuralNetwork_1
             momentumMatrixHidden = new Matrix.Matrix(hiddenAmount, inputAmount);
             momentumMatrixOutput = new Matrix.Matrix(outputAmount, hiddenAmount);
 
-            hiddenWeights.RandomizeMatrix(-5, 5);
-            outputWeights.RandomizeMatrix(-5, 5);
-
+            hiddenWeights.RandomizeMatrix(-1, 1);
+            outputWeights.RandomizeMatrix(-1, 1);
 
             biasHidden = new Matrix.Matrix(hiddenAmount, 1);
             biasOutput = new Matrix.Matrix(outputAmount, 1);
             momentumMatrixHiddenBias = new Matrix.Matrix(hiddenAmount, 1); 
             momentumMatrixOutputBias = new Matrix.Matrix(outputAmount, 1);
 
-            biasHidden.RandomizeMatrix(-5, 5);
-            biasOutput.RandomizeMatrix(-5, 5);
+            biasHidden.RandomizeMatrix(-1, 1);
+            biasOutput.RandomizeMatrix(-1, 1);
             
         }
 
-        public Matrix.Matrix feedForward(int[] inputArray)
+        public Matrix.Matrix feedForward(double[] inputArray)
         {
             Matrix.Matrix inputMatrix = new Matrix.Matrix(inputArray);    // 3 x 1
             Matrix.Matrix hiddenOutput = hiddenWeights * inputMatrix;
@@ -68,7 +67,7 @@ namespace NeuralNetwork_1
             return outputsOutput;
         }
 
-        public void train(int[] inputArray, int[] targetArray)
+        public void train(double[] inputArray, double[] targetArray)
         {
             Matrix.Matrix inputMatrix = new Matrix.Matrix(inputArray);    // 3 x 1
             Matrix.Matrix hiddenOutput = hiddenWeights * inputMatrix;
@@ -77,6 +76,8 @@ namespace NeuralNetwork_1
                 hiddenOutput += biasHidden;
             }
             activationFunction(hiddenOutput);
+
+            //showHiddenOutputs(hiddenOutput);
 
             Matrix.Matrix outputsOutput = outputWeights * hiddenOutput;
             if (useBias)
@@ -130,6 +131,14 @@ namespace NeuralNetwork_1
             momentumMatrixHiddenBias = gradients_hidden * momentumRate;
 
         }
+
+        public void showHiddenOutputs (Matrix.Matrix a)
+        {
+            Console.WriteLine("Hidden outputs: ");
+            a.DisplayMatrix();
+            Console.Write('\n');
+        }
+
 
         public void activationFunction(Matrix.Matrix m)
         {

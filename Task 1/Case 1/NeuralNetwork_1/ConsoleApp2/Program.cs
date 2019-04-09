@@ -111,32 +111,97 @@ namespace NeuralNetwork_1
 
             //ZADANIE 1
 
-            int[][] data = new int[4][];
-            data[0] = new int[] { 1, 0, 0, 0 };
-            data[1] = new int[] { 0, 1, 0, 0 };
-            data[2] = new int[] { 0, 0, 1, 0 };
-            data[3] = new int[] { 0, 0, 0, 1 };
+            double[][] data = new double[4][];
+            data[0] = new double[] { 1, 0, 0, 0 };
+            data[1] = new double[] { 0, 1, 0, 0 };
+            data[2] = new double[] { 0, 0, 1, 0 };
+            data[3] = new double[] { 0, 0, 0, 1 };
 
-            NeuralNetwork nn = new NeuralNetwork(4, 10, 4, true);
+            //NeuralNetwork nn = new NeuralNetwork(4, 3, 4, true);
             int n = 0;
+            double sum = 0;
+
 
             Random rnd = new Random();
-
-            for (int i = 0; i < 10000; ++i)
-            {
-                n = rnd.Next(0, 4);
-                nn.train(data[n], data[n]);
-            }
-
             Matrix.Matrix output = new Matrix.Matrix(4, 1);
+            int epochs = 0;
+            double averageSquareOfEpochs = 0;
 
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < 20; ++i)
+            {
+                NeuralNetwork nn = new NeuralNetwork(4, 2, 4, true);
+                do
+                {
+                    sum = 0;
+                    //trenowanie
+                    foreach (int j in Enumerable.Range(0, 4).OrderBy(x => rnd.Next()))
+                    {
+                        nn.train(data[j], data[j]);
+                    }
+
+                    for (int j = 0; j < 4; ++j)
+                    {
+                        output = nn.feedForward(data[j]);
+                        for (int z = 0; z < 4; ++z)
+                        {
+                            sum += (output.tab[z, 0] - data[j][z]) * (output.tab[z, 0] - data[j][z]);
+                        }
+                    }
+                    ++epochs;
+                   // Console.WriteLine("Mean squared error: " + sum / 2);
+
+                } while (sum / 2> 0.1);
+
+                Console.WriteLine("epochs: " + epochs);
+                averageSquareOfEpochs += epochs;
+                epochs = 0;
+            }
+            averageSquareOfEpochs /= 20;
+
+            Console.WriteLine("averageSquareOfEpochs: " + averageSquareOfEpochs);
+
+           /* for (int i = 0; i < 30000; ++i)
+            {
+                foreach (int j in Enumerable.Range(0, 4).OrderBy(x => rnd.Next()))
+                {
+                    nn.train(data[j], data[j]);
+                    //Console.WriteLine(j);
+                }
+
+                sum = 0;
+
+
+                for (int j = 0; j < 4; ++j)
+                {
+                    output = nn.feedForward(data[j]);
+                    for (int z = 0; z < 4; ++z)
+                    {
+                        //Console.WriteLine("(output.tab[z, 0]: " + (output.tab[z, 0] + " data[j][z]: " + data[j][z]));
+
+                        sum += (output.tab[z, 0] - data[j][z]) * (output.tab[z, 0] - data[j][z]);
+                    }
+                    //Console.WriteLine("Mean squared error: " + sum / 2);
+                    //sum = 0;                    
+                }
+
+                Console.WriteLine("Mean squared error: " + sum / 2);
+
+                
+            }*/
+
+
+           
+
+
+            /*for (int i = 0; i < 4; ++i)
             {
                 output = nn.feedForward(data[i]);
                 output.DisplayMatrix();
                 Console.Write('\n');
-            }
+            }*/
+            
 
+            
         }
 }
 }
