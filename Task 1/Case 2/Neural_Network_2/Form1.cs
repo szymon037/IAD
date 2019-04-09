@@ -34,9 +34,12 @@ namespace Neural_Network_2
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Matrix.Matrix output = new Matrix.Matrix(1, 1);
+            double sum = 0;
+            int epoch = 0;
             Console.WriteLine("hello");
-            for (int i = 0; i < 81; i++)
-               // Console.WriteLine(data[i] + " " + target[i]);
+
+
             LoadFromFile();
             //SortX(data, target);
             PlotView pv = new PlotView
@@ -54,32 +57,48 @@ namespace Neural_Network_2
                 MarkerSize = 2,
                 MarkerStroke = OxyColors.Red
             };
-            var punktySieci = new OxyPlot.Series.LineSeries();
+            var punktySieci = new OxyPlot.Series.LineSeries()
+            {
+                LineStyle = LineStyle.None,
+                MarkerType = MarkerType.Plus,
+                MarkerSize = 2,
+                MarkerStroke = OxyColors.Blue
+            };
 
             for (int i = 0; i < data.Length; i++)
             {
                 punktySerii.Points.Add(new DataPoint(data[i], target[i]));
             }
-            
 
-            NeuralNetworks.NeuralNetwork nn = new NeuralNetworks.NeuralNetwork(81,4,81, true);
-
-            for(int i = 0; i < 1000; i++)
+            for (int i = 0; i < 20; i++)
             {
-                Shuffle(data, target);
-                nn.Train(data, target);
+                NeuralNetwork.NeuralNetwork nn = new NeuralNetwork.NeuralNetwork(1, 10, 1, true);
+                //do
+                //{
+                    double[] d= new double[1];
+                    sum = 0;
+
+                    //training 
+                    foreach (int j in Enumerable.Range(0, 81).OrderBy(x => rnd.Next()))
+                    {
+                        d[0] =  data[j];
+                        double[] y = new double[1] { target[j] };
+                        nn.Train(d, y);
+                    }
+                    
+                    for (int j = 0; j < 81; ++j)
+                    {
+                        double[] Wyjscie = new double[81];
+                        double[] dataCell = new double[1] { data[j] };
+                        Wyjscie[j] = nn.FeedForward(dataCell).tab[0, 0];
+                        output = nn.FeedForward(data);
+                    punktySieci.Points.Add(new DataPoint(data[j], Wyjscie[j]));
+                    }
+                    ++epoch;
+                //}
+                //while (sum / 2 > 0.1);
             }
-
-            Matrix.Matrix output = new Matrix.Matrix(81, 2);
-
-            for(int i = 0; i < 81; i++)
-            {
-                output = nn.FeedForward(data);
-                punktySieci.Points.Add(new DataPoint(data[i], output.tab[i,0]));
-                Console.WriteLine(output.tab[i, 0]);
-            }
-
-           // output.DisplayMatrix();
+           //output.DisplayMatrix();
             pm.Series.Add(punktySieci);
             pm.Series.Add(punktySerii);
         }
