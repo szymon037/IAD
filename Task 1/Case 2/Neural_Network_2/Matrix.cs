@@ -75,7 +75,7 @@ namespace Matrix
             }
         }
 
-        public void ArrayToMatrix(int[] array, bool bias)
+        public void ArrayToMatrix(double[] array, bool bias)
         {
             for (int i = 0; i < array.Length; ++i)
             {

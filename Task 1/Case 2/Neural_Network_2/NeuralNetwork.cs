@@ -25,8 +25,8 @@ namespace NeuralNetwork
 
         public NeuralNetwork(int inputAmount, int hiddenAmount, int outputAmount, bool bias)
         {
-            learningRate = 0.04;
-            momentumRate = 0.08;
+            learningRate = 0.01;
+            momentumRate = 0.02;
             useBias = bias;
 
             hiddenWeights = new Matrix.Matrix(hiddenAmount, inputAmount);    // 2 x 3
