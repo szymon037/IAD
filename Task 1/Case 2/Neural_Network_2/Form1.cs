@@ -42,12 +42,12 @@ namespace Neural_Network_2
             double sum = 0;
             double sumTest = 0;
             int epochs = 0;
-            int epoch = 600;
+            int epoch = 5000;
 
 
             LoadFromFile(data, target);
             LoadFromFileTest(dataTest, targetTest);
-            //SortX(data, target);
+            SortX(data, target);
             this.Controls.Add(pv);
             this.Controls.Add(pv2);
             PlotModel pm = new PlotModel();
@@ -60,9 +60,10 @@ namespace Neural_Network_2
             LineSeries punktySerii = new LineSeries
             {
                 LineStyle = LineStyle.None,
-                MarkerType = MarkerType.Circle,
+                MarkerType = MarkerType.Diamond,
                 MarkerSize = 2,
-                MarkerStroke = OxyColors.Red
+                MarkerStroke = OxyColors.Red,
+                Title = "Punkty treningowe"
             };
             LineSeries punktySeriiTestu = new LineSeries
             {
@@ -107,54 +108,67 @@ namespace Neural_Network_2
                 Color = OxyColors.Blue,
                 StrokeThickness = 1
             };
-
-
             /*
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (data[i] >= 1)
+                    target[i] = data[i] * -2;
+            }
+            */
+
             for (int i = 0; i < data.Length; i++)
             {
                 punktySerii.Points.Add(new DataPoint(data[i], target[i]));
             }
-            */
-            for (int i = 0; i< dataTest.Length; i++)
+
+            for (int i = 0; i < dataTest.Length; i++)
             {
                 punktySeriiTestu.Points.Add(new DataPoint(dataTest[i], targetTest[i]));
             }
+
+
 
             Matrix.Matrix outputFF = new Matrix.Matrix(1, 1);
             double[] d = new double[1];
             NeuralNetwork.NeuralNetwork nn = new NeuralNetwork.NeuralNetwork(1, 10, 1, true);
 
             //uczenie
-            
+
             for (int i = 0; i < epoch; ++i)
             {
                 sum = 0;
                 sumTest = 0;
+
                 foreach (int j in Enumerable.Range(0, 81).OrderBy(x => rnd.Next()))
                 {
                     d[0] = data[j];
                     double[] y = new double[1] { target[j] };
                     nn.Train(d, y);
+                    // Console.Write("x: " + data[j]+ "y= ");
+                    // nn.FeedForward(d).DisplayMatrix();
+                    // Console.WriteLine();
                 }
-                
+                Console.WriteLine("epoka: " + epochs);
 
-                for(int j = 0; j < data.Length; j++)
+
+
+                for (int j = 0; j < data.Length; j++)
                 {
                     d[0] = data[j];
                     outputFF = nn.FeedForward(d);
-                    sum += (outputFF.tab[0,0] - target[j]) * (outputFF.tab[0, 0] - target[j])/2;
+                    sum += (outputFF.tab[0, 0] - target[j]) * (outputFF.tab[0, 0] - target[j]) / 2;
                 }
 
                 for (int j = 0; j < dataTest.Length; j++)
                 {
                     d[0] = dataTest[j];
                     outputFF = nn.FeedForward(d);
-                    sumTest += (outputFF.tab[0, 0] - targetTest[j]) * (outputFF.tab[0, 0] - targetTest[j])/2;
+                    sumTest += (outputFF.tab[0, 0] - targetTest[j]) * (outputFF.tab[0, 0] - targetTest[j]) / 2;
                 }
 
                 EpochErrorTest.Add(new DataPoint(epochs, sumTest / dataTest.Length));
-                EpochError.Add(new DataPoint(epochs,sum / data.Length ));
-                 ++epochs;
+                EpochError.Add(new DataPoint(epochs, sum / data.Length));
+                ++epochs;
             }
             /*
             for (int i = 0; i < data.Length; ++i)
@@ -196,22 +210,22 @@ namespace Neural_Network_2
                 punktyBleduTestowego.Points.Add(EpochErrorTest[i]);
                 punktyBledu.Points.Add(EpochError[i]);
             }
-            
+
             pm2.Series.Add(punktyBleduTestowego);
             pm2.Series.Add(punktyBledu);
             pm2.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = OxyPlot.Axes.AxisPosition.Bottom, MinimumPadding = 0.1, MaximumPadding = 0.1, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Epoka" });
             pm2.Axes.Add(new OxyPlot.Axes.LinearAxis { Position = OxyPlot.Axes.AxisPosition.Left, MinimumPadding = 0.1, MaximumPadding = 0.1, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Błąd" });
-            
+
             //for points
 
-
+            pm.Series.Add(punktySerii);
             pm.Series.Add(punktySieci);
             pm.Series.Add(punktySeriiTestu);
             //pm.Series.Add(punktyKresekTestu);
             //pm.Series.Add(punktyKresek);
 
-
         }
+
 
         private void LoadFromFileTest(double[] data, double[] target)
         {
@@ -232,7 +246,7 @@ namespace Neural_Network_2
         }
         private void LoadFromFile(double[] data, double[] target)
         {
-            var fileStream = new FileStream(@"D:\input.txt", FileMode.Open, FileAccess.Read);
+            var fileStream = new FileStream(@"D:\input.txt",  FileMode.Open, FileAccess.Read);
             using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
             {
                 int i = 0;

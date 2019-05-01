@@ -11,7 +11,7 @@ namespace Matrix
         public int row;
         public int column;
         public double[,] tab;
-
+        
         public Matrix(int x, int y)
         {
             this.row = x;
@@ -70,7 +70,8 @@ namespace Matrix
             {
                 for (int j = 0; j < column; j++)
                 {
-                    tab[i, j] = rnd.Next(min, max);
+                    //tab[i, j] = rnd.Next(min, max);
+                    tab[i,j] = rnd.NextDouble() * (max - min) + min;
                 }
             }
         }

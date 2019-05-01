@@ -157,40 +157,40 @@ namespace NeuralNetwork_1
                 epochs = 0;
             }
             averageSquareOfEpochs /= 20;
-
+            output.DisplayMatrix();
             Console.WriteLine("averageSquareOfEpochs: " + averageSquareOfEpochs);
 
-           /* for (int i = 0; i < 30000; ++i)
-            {
-                foreach (int j in Enumerable.Range(0, 4).OrderBy(x => rnd.Next()))
-                {
-                    nn.train(data[j], data[j]);
-                    //Console.WriteLine(j);
-                }
+            /* for (int i = 0; i < 30000; ++i)
+             {
+                 foreach (int j in Enumerable.Range(0, 4).OrderBy(x => rnd.Next()))
+                 {
+                     nn.train(data[j], data[j]);
+                     //Console.WriteLine(j);
+                 }
 
-                sum = 0;
-
-
-                for (int j = 0; j < 4; ++j)
-                {
-                    output = nn.feedForward(data[j]);
-                    for (int z = 0; z < 4; ++z)
-                    {
-                        //Console.WriteLine("(output.tab[z, 0]: " + (output.tab[z, 0] + " data[j][z]: " + data[j][z]));
-
-                        sum += (output.tab[z, 0] - data[j][z]) * (output.tab[z, 0] - data[j][z]);
-                    }
-                    //Console.WriteLine("Mean squared error: " + sum / 2);
-                    //sum = 0;                    
-                }
-
-                Console.WriteLine("Mean squared error: " + sum / 2);
-
-                
-            }*/
+                 sum = 0;
 
 
-           
+                 for (int j = 0; j < 4; ++j)
+                 {
+                     output = nn.feedForward(data[j]);
+                     for (int z = 0; z < 4; ++z)
+                     {
+                         //Console.WriteLine("(output.tab[z, 0]: " + (output.tab[z, 0] + " data[j][z]: " + data[j][z]));
+
+                         sum += (output.tab[z, 0] - data[j][z]) * (output.tab[z, 0] - data[j][z]);
+                     }
+                     //Console.WriteLine("Mean squared error: " + sum / 2);
+                     //sum = 0;                    
+                 }
+
+                 Console.WriteLine("Mean squared error: " + sum / 2);
+
+
+             }*/
+
+
+
 
 
             /*for (int i = 0; i < 4; ++i)
@@ -199,9 +199,9 @@ namespace NeuralNetwork_1
                 output.DisplayMatrix();
                 Console.Write('\n');
             }*/
-            
 
-            
+
+            Console.Read();
         }
 }
 }
