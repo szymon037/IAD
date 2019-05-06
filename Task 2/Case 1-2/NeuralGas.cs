@@ -27,19 +27,16 @@ namespace task_2
             }
         }
 
-        public NeuralGas (int neurons_quantity, double min, double max)
+        public NeuralGas(int neurons_quantity, double min, double max)
         {
             numberOfNeurons = neurons_quantity;
-            range_init = 10;
+            range_init = 0.45;
             range_fin = 0.01;
-            range_curr = range_init;//range_curr = range_init * Math.Pow((range_fin / range_init), (40000 / 40000));//range_init;
+            range_curr = range_init;
 
-            learningRate_init = 0.5;
+            learningRate_init = 0.1;
             learningRate_fin = 0.005;
-            learningRate_curr = learningRate_init;//learningRate_init * Math.Pow((learningRate_fin / learningRate_init), (40000 / 40000));//learningRate_init;
-
-            Console.WriteLine("range_curr: " + range_curr);
-            Console.WriteLine("learningRate_curr: " + learningRate_curr);
+            learningRate_curr = learningRate_init;
 
             neurons = new double[numberOfNeurons][];
             for (int i = 0; i < numberOfNeurons; ++i)
@@ -53,8 +50,10 @@ namespace task_2
             return Math.Sqrt((point1[0] - point2[0]) * (point1[0] - point2[0]) + (point1[1] - point2[1]) * (point1[1] - point2[1]));
         }
 
-        public void Train(double[] input)
+        public void Train(double[] input, int iteration_fin, int iteration_curr)
         {
+            Update(iteration_fin, iteration_curr);
+
             double[] temp = new double[2];
 
             ///////////////////////////
@@ -67,7 +66,7 @@ namespace task_2
 
             ///////////////////////////
             ///SORTOWANIE
-            
+
             for (int i = 0; i < numberOfNeurons; ++i)
             {
                 for (int j = 0; j < numberOfNeurons - 1; ++j)

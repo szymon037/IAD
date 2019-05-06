@@ -52,7 +52,7 @@
             this.tBpoints.Name = "tBpoints";
             this.tBpoints.Size = new System.Drawing.Size(100, 20);
             this.tBpoints.TabIndex = 1;
-            this.tBpoints.Text = "200";
+            this.tBpoints.Text = "2000";
             // 
             // label1
             // 
