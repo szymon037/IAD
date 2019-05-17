@@ -23,19 +23,27 @@ namespace pictures2
         private int sizeOfFrame;
         private int mode;
 
-        public NeuralNetwork (int width, int height, int size, int MODE)
+        public NeuralNetwork (int width, int height, int size, int MODE, double RINIT, double RFIN, double LRINIT, double LRFIN)
         {
             mode = MODE;
             sizeOfFrame = size;
             gridWidth = width;
             gridHeight = height;
-
+            /*
             range_init = 1;//0.8
             range_fin = 0.0001;//0.1;
             range_curr = range_init;
 
             learningRate_init = 0.15; //0.15
             learningRate_fin = 0.005;//0.05;   //0.001
+            learningRate_curr = learningRate_init;
+            */
+            range_init = RINIT;//0.8
+            range_fin = RFIN;//0.1;
+            range_curr = range_init;
+
+            learningRate_init = LRINIT; //0.15
+            learningRate_fin = LRFIN;//0.05;   //0.001
             learningRate_curr = learningRate_init;
             Random rnd = new Random();
 
