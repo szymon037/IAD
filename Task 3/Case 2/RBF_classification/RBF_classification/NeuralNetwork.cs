@@ -20,6 +20,7 @@ namespace RBF_classification
         private Matrix.Matrix biasOutput;
 
         private int numberOfHiddenNeurons;
+        private int beta = 1;
 
         private bool useBias;
         private double learningRate;
@@ -60,7 +61,8 @@ namespace RBF_classification
             for (int i = 0; i < numberOfHidden; ++i)
             {
                 //wypełnianie macierzy r - zasięgu
-                range.tab[i, 0] = rnd.NextDouble() * 4;
+                range.tab[i, 0] = 
+                    setRange(centre[i])*beta;
             }
 
 
@@ -132,9 +134,24 @@ namespace RBF_classification
             }
         }
 
-        public static double EDistance(Kmeans.Point a, Kmeans.Centroid c)
+        public double EDistance(Kmeans.Point a, Kmeans.Centroid c)
         {
             return Math.Pow(a.X - c.X, 2) + Math.Pow(a.Y - c.Y, 2) + Math.Pow(a.Z - c.Z, 2) + Math.Pow(a.Q - c.Q, 2);
+        }
+
+        public double setRange(Kmeans.Centroid c)
+        {
+            List<double> r = new List<double>();
+
+            foreach(Centroid ce in centre)
+            {
+                if (ce != c)
+                {
+                    r.Add(EDistance(new Kmeans.Point(ce.X, ce.Y, ce.Z, ce.Q), c));
+                }
+            }
+
+            return Math.Sqrt(r.Min()); ;
         }
     }
 }

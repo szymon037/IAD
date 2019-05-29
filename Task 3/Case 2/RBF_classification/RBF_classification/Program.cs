@@ -14,7 +14,7 @@ namespace RBF_classification
         public static double[] inputArray;
         public static double[] targetArray;
         public static int numberOfInputs = 4;
-        public static int epochs = 1000000;
+        public static int epochs = 1000;
         Matrix.Matrix inputs;
 
 
