@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kmeans;
 
 namespace RBF_classification
 {
@@ -11,7 +12,7 @@ namespace RBF_classification
 
         public Matrix.Matrix hiddenOutput;
         public Matrix.Matrix outputWeights;
-        private Matrix.Matrix centre;
+        private List<Kmeans.Centroid> centre;
         private Matrix.Matrix range;
         private Matrix.Matrix inp;
 
@@ -26,17 +27,16 @@ namespace RBF_classification
 
         public NeuralNetwork(int numberOfInputs, int numberOfHidden, int numberOfOutput, Matrix.Matrix inputs)
         {
-            learningRate = 0.1;
-            momentumRate = 0.5;
+            learningRate = 0.01;
+            momentumRate = 0.05;
 
             numberOfHiddenNeurons = numberOfHidden;
 
             inp = inputs;
 
-            hiddenOutput = new Matrix.Matrix(numberOfHidden, numberOfInputs);
+            hiddenOutput = new Matrix.Matrix(numberOfHidden, 1);
             outputWeights = new Matrix.Matrix(numberOfOutput, numberOfHidden);
 
-            centre = new Matrix.Matrix(numberOfHidden, numberOfInputs);
             range = new Matrix.Matrix(numberOfHidden, 1);
 
             //hiddenOutput.RandomizeMatrix(-1, 1);
@@ -44,15 +44,20 @@ namespace RBF_classification
 
             Random rnd = new Random();
 
+            List<Kmeans.Point> Data = new List<Kmeans.Point>();
+            for ( int i = 0; i < inputs.row; i++)
+            {
+                Data.Add(new Kmeans.Point(inputs.tab[i, 0], inputs.tab[i, 1], inputs.tab[i, 2], inputs.tab[i, 3]));
+            }
+
+            var km = new Kmeans.KMeans(numberOfHidden, Data, rnd);
+
+            km.Train();
+
+            centre = km.Centroids;
+
             for (int i = 0; i < numberOfHidden; ++i)
             {
-                //wypełnianie macierzy c - centrów
-                int index = rnd.Next(0, inputs.row);
-                for (int j = 0; j < numberOfInputs; ++j)
-                {
-                    centre.tab[i, j] = inputs.tab[index, j];
-                    //Console.WriteLine(centre.tab[i, j]);
-                }
                 //wypełnianie macierzy r - zasięgu
                 range.tab[i, 0] = rnd.NextDouble() * 1;
             }
@@ -82,6 +87,7 @@ namespace RBF_classification
             Matrix.Matrix outputsOutput = outputWeights * hiddenOutput;
 
             Matrix.Matrix targetMatrix = new Matrix.Matrix(targetArray);
+
             Matrix.Matrix outputErrorsMatrix = targetMatrix - outputsOutput;
 
             mapMatrixLinearry(outputsOutput);   //!!! do zmiany w wariancie 2 na normalne mapowanie
@@ -104,14 +110,14 @@ namespace RBF_classification
         {
             for (int i = 0; i < numberOfHiddenNeurons; ++i)
             {
-                hiddenOutput.tab[i, 0] = GaussianBasisFunction(x[0], centre.tab[i, 0], range.tab[i, 0]);
+                hiddenOutput.tab[i, 0] = GaussianBasisFunction(new Point(x[0],x[1],x[2],x[3]), centre[i], range.tab[i, 0]);
                 //Console.WriteLine(centre.tab[i, 0]);
             }
         }
 
-        private double GaussianBasisFunction(double x, double c, double r)         //??? wzór do sprawdzenia
+        private double GaussianBasisFunction(Kmeans.Point x, Kmeans.Centroid c, double r)         //??? wzór do sprawdzenia
         {
-            return Math.Exp((-1) * ((x - c) * (x - c)) / r * r);
+            return Math.Exp((-1) * (EDistance(x, c) * (EDistance(x, c)) / r * r));
         }
 
         private void mapMatrixLinearry(Matrix.Matrix m)
@@ -123,6 +129,11 @@ namespace RBF_classification
                     m.tab[i, j] = 1;
                 }
             }
+        }
+
+        public static double EDistance(Kmeans.Point a, Kmeans.Centroid c)
+        {
+            return Math.Sqrt(Math.Pow(a.X - c.X, 2) + Math.Pow(a.Y - c.Y, 2) + Math.Pow(a.Z - c.Z, 2) + Math.Pow(a.Q - c.Q, 2));
         }
     }
 }

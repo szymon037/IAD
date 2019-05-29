@@ -40,7 +40,7 @@ namespace RBF_classification
 
             Random rnd = new Random();
 
-            NeuralNetwork nn = new NeuralNetwork(4, 10, 1, p.inputs);
+            NeuralNetwork nn = new NeuralNetwork(4, 4, 3, p.inputs);
 
             for (int i = 0; i < epochs; ++i)
             {
@@ -54,11 +54,100 @@ namespace RBF_classification
                         inputArray[z] = classification_train[j][z];
                     }
                     targetArray[(int)classification_train[j][4] - 1] = 1;
-                    
+
                     nn.Train(inputArray, targetArray);
                 }
+
+
+            }/*
+            Matrix.Matrix output = new Matrix.Matrix(3, 1);
+            for (int i = 0; i < 93; ++i)
+            {
+                for (int z = 0; z < numberOfInputs; ++z)
+                {
+                    inputArray[z] = classification_test[i][z];
+                    if (z == 0)
+                    {
+                        Console.Write(classification_test[i][4] + " ");
+                    }
+                    
+                }
+
+                output = nn.FeedForward(inputArray);
+                output = output.TransposeMatrix();
+                output.DisplayMatrix();
+            }*/
+            Matrix.Matrix output = new Matrix.Matrix(3, 1);
+            Matrix.Matrix confusionMatrix = new Matrix.Matrix(3, 3);
+            double numberOfCorrect = 0;
+            double percentOfCorectness = 0;
+            int predictedOutput = 0;
+
+            for (int i = 0; i < 93; ++i)
+            {
+                for (int z = 0; z < numberOfInputs; ++z)
+                {
+                    if (z == 0)
+                    {
+                        Console.Write(classification_test[i][4] + " ");
+                    }
+                    inputArray[z] = classification_test[i][z];
+                }
+
+                output = nn.FeedForward(inputArray);
+                output = output.TransposeMatrix();
+
+                //POTRZEBNE DO LICZNIEA BŁĘDU ŚREDNIOKWADRATOWEGO
+                /*Array.Clear(targetArray, 0, 3);
+                targetArray[(int)classification_test[i][4] - 1] = 1;
+                Console.WriteLine(" targetArray: " + targetArray[0] + " " + targetArray[1] + " " + targetArray[2]);*/
+
+
+                //LICZENIE PROCENTA POPRAWNOŚCI
+                if (output.tab[0, 0] > output.tab[0, 1] && output.tab[0, 0] > output.tab[0, 2] && classification_test[i][4] == 1)
+                {
+                    ++numberOfCorrect;
+
+                }
+                else if (output.tab[0, 1] > output.tab[0, 0] && output.tab[0, 1] > output.tab[0, 2] && classification_test[i][4] == 2)
+                {
+                    ++numberOfCorrect;
+                }
+                else if (output.tab[0, 2] > output.tab[0, 0] && output.tab[0, 2] > output.tab[0, 1] && classification_test[i][4] == 3)
+                {
+                    ++numberOfCorrect;
+                }
+
+                predictedOutput = 0;
+                if (output.tab[0, 0] > output.tab[0, 1] && output.tab[0, 0] > output.tab[0, 2])
+                {
+                    predictedOutput = 1;
+                }
+                else if (output.tab[0, 1] > output.tab[0, 0] && output.tab[0, 1] > output.tab[0, 2])
+                {
+                    predictedOutput = 2;
+                }
+                else if (output.tab[0, 2] > output.tab[0, 0] && output.tab[0, 2] > output.tab[0, 1])
+                {
+                    predictedOutput = 3;
+                }
+
+                //WYPEŁNIANIE MACIERZY POMYŁEK (confusionMatrix)
+                if (predictedOutput > 0)
+                {
+                    confusionMatrix.tab[(int)classification_test[i][4] - 1, predictedOutput - 1]++;
+                }
+
+                output.DisplayMatrix();
             }
 
+            percentOfCorectness = numberOfCorrect / 93;
+            percentOfCorectness *= 100;
+            //Console.WriteLine("\nNumber of correct: " + numberOfCorrect);
+            Console.WriteLine("\nPercentage of corectness: " + percentOfCorectness);
+            Console.WriteLine("\nConfusion matrix: ");
+            confusionMatrix.DisplayMatrix();
+            Console.ReadKey();
         }
 
         public void LoadFromFile()

@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Centroid.cs" />
+    <Compile Include="KMeans.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="NeuralNetwork.cs" />
     <Compile Include="Program.cs" />
