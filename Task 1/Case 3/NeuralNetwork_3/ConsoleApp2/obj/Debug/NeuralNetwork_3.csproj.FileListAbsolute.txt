@@ -1,0 +1,7 @@
+C:\Users\Suszkow\Documents\GitHub\IAD\Task 1\Case 3\NeuralNetwork_3\ConsoleApp2\bin\Debug\ConsoleApp2.exe.config
+C:\Users\Suszkow\Documents\GitHub\IAD\Task 1\Case 3\NeuralNetwork_3\ConsoleApp2\bin\Debug\ConsoleApp2.exe
+C:\Users\Suszkow\Documents\GitHub\IAD\Task 1\Case 3\NeuralNetwork_3\ConsoleApp2\bin\Debug\ConsoleApp2.pdb
+C:\Users\Suszkow\Documents\GitHub\IAD\Task 1\Case 3\NeuralNetwork_3\ConsoleApp2\obj\Debug\NeuralNetwork_3.csprojAssemblyReference.cache
+C:\Users\Suszkow\Documents\GitHub\IAD\Task 1\Case 3\NeuralNetwork_3\ConsoleApp2\obj\Debug\NeuralNetwork_3.csproj.CoreCompileInputs.cache
+C:\Users\Suszkow\Documents\GitHub\IAD\Task 1\Case 3\NeuralNetwork_3\ConsoleApp2\obj\Debug\ConsoleApp2.exe
+C:\Users\Suszkow\Documents\GitHub\IAD\Task 1\Case 3\NeuralNetwork_3\ConsoleApp2\obj\Debug\ConsoleApp2.pdb

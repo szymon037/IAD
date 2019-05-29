@@ -40,7 +40,7 @@ namespace RBF_classification
             range = new Matrix.Matrix(numberOfHidden, 1);
 
             //hiddenOutput.RandomizeMatrix(-1, 1);
-            outputWeights.RandomizeMatrix(-5, 5);
+            outputWeights.RandomizeMatrix(-1, 1);
 
             Random rnd = new Random();
 
@@ -53,13 +53,14 @@ namespace RBF_classification
             var km = new Kmeans.KMeans(numberOfHidden, Data, rnd);
 
             km.Train();
+            Console.WriteLine("centroids done");
 
             centre = km.Centroids;
 
             for (int i = 0; i < numberOfHidden; ++i)
             {
                 //wypełnianie macierzy r - zasięgu
-                range.tab[i, 0] = rnd.NextDouble() * 1;
+                range.tab[i, 0] = rnd.NextDouble() * 4;
             }
 
 
@@ -90,11 +91,11 @@ namespace RBF_classification
 
             Matrix.Matrix outputErrorsMatrix = targetMatrix - outputsOutput;
 
-            mapMatrixLinearry(outputsOutput);   //!!! do zmiany w wariancie 2 na normalne mapowanie
+           // mapMatrixLinearry(outputsOutput);   //!!! do zmiany w wariancie 2 na normalne mapowanie
 
             Matrix.Matrix gradients_output = outputErrorsMatrix * learningRate;
 
-            gradients_output.HadamardProduct(outputsOutput);
+            //gradients_output.HadamardProduct(outputsOutput);
             //gradients_output.DisplayMatrix();
             Matrix.Matrix hiddenTransposed = hiddenOutput.TransposeMatrix();
             //hiddenTransposed.DisplayMatrix();
@@ -117,7 +118,7 @@ namespace RBF_classification
 
         private double GaussianBasisFunction(Kmeans.Point x, Kmeans.Centroid c, double r)         //??? wzór do sprawdzenia
         {
-            return Math.Exp((-1) * (EDistance(x, c) * (EDistance(x, c)) / r * r));
+            return Math.Exp((-1) * (EDistance(x, c)) / r * r);
         }
 
         private void mapMatrixLinearry(Matrix.Matrix m)
@@ -133,7 +134,7 @@ namespace RBF_classification
 
         public static double EDistance(Kmeans.Point a, Kmeans.Centroid c)
         {
-            return Math.Sqrt(Math.Pow(a.X - c.X, 2) + Math.Pow(a.Y - c.Y, 2) + Math.Pow(a.Z - c.Z, 2) + Math.Pow(a.Q - c.Q, 2));
+            return Math.Pow(a.X - c.X, 2) + Math.Pow(a.Y - c.Y, 2) + Math.Pow(a.Z - c.Z, 2) + Math.Pow(a.Q - c.Q, 2);
         }
     }
 }

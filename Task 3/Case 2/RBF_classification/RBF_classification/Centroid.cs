@@ -27,13 +27,13 @@ namespace Kmeans
             CentroidPoints.Add(point);
         }
 
-        public Centroid(Random rnd)
+        public Centroid(Random rnd, Point p)
         {
             rng = rnd;
-            X = rnd.Next(4, 8);
-            Y = rnd.Next(2,5);
-            Z = rnd.Next(1, 7);
-            Q = rnd.Next(0,3);
+            X = p.X;
+            Y = p.Y;
+            Z = p.Z;
+            Q = p.Q;
             CentroidPoints = new List<Point>();
             OldCentroidPoints = new List<Point>();
         }

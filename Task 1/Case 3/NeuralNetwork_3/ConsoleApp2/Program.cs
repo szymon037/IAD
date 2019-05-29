@@ -38,7 +38,7 @@ namespace NeuralNetwork_1
             
             Random rnd = new Random();
 
-            NeuralNetwork nn = new NeuralNetwork(4, 40, 3, true);
+            NeuralNetwork nn = new NeuralNetwork(4, 4, 3, true);
 
             /*for (int j = 0; j < 90; ++j)
             {

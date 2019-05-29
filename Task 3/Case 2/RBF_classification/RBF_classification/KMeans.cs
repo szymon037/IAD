@@ -36,7 +36,7 @@ namespace Kmeans
             Data = data;
             for (int i = 0; i < num; i++)
             {
-                Centroids.Add(new Centroid(rnd));
+                Centroids.Add(new Centroid(rnd,data[rnd.Next(0,90)]));
             }
         }
 
