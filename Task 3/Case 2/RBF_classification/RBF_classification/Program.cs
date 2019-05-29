@@ -14,7 +14,7 @@ namespace RBF_classification
         public static double[] inputArray;
         public static double[] targetArray;
         public static int numberOfInputs = 4;
-        public static int epochs = 1000;
+        public static int epochs = 10000;
         Matrix.Matrix inputs;
 
 
@@ -40,7 +40,7 @@ namespace RBF_classification
 
             Random rnd = new Random();
 
-            NeuralNetwork nn = new NeuralNetwork(4, 6, 3, p.inputs);
+            NeuralNetwork nn = new NeuralNetwork(4, 6, 3, true, p.inputs);
 
             for (int i = 0; i < epochs; ++i)
             {

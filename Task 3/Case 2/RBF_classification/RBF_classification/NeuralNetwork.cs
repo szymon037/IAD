@@ -16,8 +16,9 @@ namespace RBF_classification
         private Matrix.Matrix range;
         private Matrix.Matrix inp;
 
-        private Matrix.Matrix biasHidden;
         private Matrix.Matrix biasOutput;
+        private Matrix.Matrix momentumMatrixOutput;
+        private Matrix.Matrix momentumMatrixOutputBias;
 
         private int numberOfHiddenNeurons;
         private int beta = 1;
@@ -26,10 +27,11 @@ namespace RBF_classification
         private double learningRate;
         private double momentumRate;
 
-        public NeuralNetwork(int numberOfInputs, int numberOfHidden, int numberOfOutput, Matrix.Matrix inputs)
+        public NeuralNetwork(int numberOfInputs, int numberOfHidden, int numberOfOutput, bool bias, Matrix.Matrix inputs)
         {
-            learningRate = 0.01;
-            momentumRate = 0.05;
+            learningRate = 0.04;
+            momentumRate = 0.08;
+            useBias = bias;
 
             numberOfHiddenNeurons = numberOfHidden;
 
@@ -54,7 +56,7 @@ namespace RBF_classification
             var km = new Kmeans.KMeans(numberOfHidden, Data, rnd);
 
             km.Train();
-            Console.WriteLine("centroids done");
+            //Console.WriteLine("centroids done");
 
             centre = km.Centroids;
 
@@ -64,8 +66,11 @@ namespace RBF_classification
                 range.tab[i, 0] = 
                     setRange(centre[i])*beta;
             }
+            momentumMatrixOutput = new Matrix.Matrix(numberOfOutput, numberOfHidden);
+            biasOutput = new Matrix.Matrix(numberOfOutput, 1);
+            momentumMatrixOutputBias = new Matrix.Matrix(numberOfOutput, 1);
 
-
+            biasOutput.RandomizeMatrix(-1, 1);
         }
 
         public Matrix.Matrix FeedForward(double[] input_x)
@@ -75,6 +80,10 @@ namespace RBF_classification
             //hiddenOutput.DisplayMatrix();
 
             Matrix.Matrix outputsOutput = outputWeights * hiddenOutput;
+            if (useBias)
+            {
+                outputsOutput += biasOutput;
+            }
             return outputsOutput;
         }
 
@@ -88,9 +97,11 @@ namespace RBF_classification
             //hiddenOutput.DisplayMatrix();
 
             Matrix.Matrix outputsOutput = outputWeights * hiddenOutput;
-
-            Matrix.Matrix targetMatrix = new Matrix.Matrix(targetArray);
-
+            if (useBias)
+            {
+                outputsOutput += biasOutput;
+            }
+            Matrix.Matrix targetMatrix = new Matrix.Matrix(targetArray);        
             Matrix.Matrix outputErrorsMatrix = targetMatrix - outputsOutput;
 
            // mapMatrixLinearry(outputsOutput);   //!!! do zmiany w wariancie 2 na normalne mapowanie
@@ -105,8 +116,14 @@ namespace RBF_classification
             //outputs_deltas.DisplayMatrix();
 
             outputWeights += outputs_deltas;
-            //Console.WriteLine("outputWeights: ");
-            //outputWeights.DisplayMatrix();
+            biasOutput += gradients_output;
+
+            outputWeights += momentumMatrixOutput;
+            biasOutput += momentumMatrixOutputBias;
+
+            momentumMatrixOutput = outputs_deltas * momentumRate;
+            momentumMatrixOutputBias = gradients_output * momentumRate;
+
         }
 
         private void FillHiddenNeurons(double[] x)
