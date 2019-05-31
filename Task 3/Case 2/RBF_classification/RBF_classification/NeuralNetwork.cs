@@ -21,7 +21,7 @@ namespace RBF_classification
         private Matrix.Matrix momentumMatrixOutputBias;
 
         private int numberOfHiddenNeurons;
-        private int beta = 1;
+        private int beta = 2;
 
         private bool useBias;
         private double learningRate;
@@ -29,8 +29,8 @@ namespace RBF_classification
 
         public NeuralNetwork(int numberOfInputs, int numberOfHidden, int numberOfOutput, bool bias, Matrix.Matrix inputs)
         {
-            learningRate = 0.04;
-            momentumRate = 0.08;
+            learningRate = 0.001;
+            momentumRate = 0.002;
             useBias = bias;
 
             numberOfHiddenNeurons = numberOfHidden;
@@ -56,7 +56,7 @@ namespace RBF_classification
             var km = new Kmeans.KMeans(numberOfHidden, Data, rnd);
 
             km.Train();
-            //Console.WriteLine("centroids done");
+            Console.WriteLine("centroids done");
 
             centre = km.Centroids;
 

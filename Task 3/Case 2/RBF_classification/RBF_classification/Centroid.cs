@@ -64,7 +64,7 @@ namespace Kmeans
                 sumX += CentroidPoints[i].X;
                 sumY += CentroidPoints[i].Y;
                 sumZ += CentroidPoints[i].Z;
-                sumY += CentroidPoints[i].Q;
+                sumQ += CentroidPoints[i].Q;
             }
             sumX /= CentroidPoints.Count;
             sumY /= CentroidPoints.Count;
